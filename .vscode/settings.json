@@ -1,0 +1,3 @@
+{
+  "js/ts.tsdk.path": "./obsidian-sample-plugin/node_modules/typescript/lib"
+}

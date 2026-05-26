@@ -1,36 +1,34 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
-import MyPlugin from "./main";
+import type VideoLoopPlugin from "./main";
 
-export interface MyPluginSettings {
-	mySetting: string;
+export interface VideoLoopSettings {
+	autoPlay: boolean;
 }
 
-export const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: "default",
+export const DEFAULT_SETTINGS: VideoLoopSettings = {
+	autoPlay: false,
 };
 
-export class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+export class VideoLoopSettingTab extends PluginSettingTab {
+	plugin: VideoLoopPlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: VideoLoopPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
 
 	display(): void {
 		const { containerEl } = this;
-
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName("Settings #1")
-			.setDesc("It's a secret")
-			.addText((text) =>
-				text
-					.setPlaceholder("Enter your secret")
-					.setValue(this.plugin.settings.mySetting)
+			.setName("Auto play")
+			.setDesc("Automatically start playing video when loaded")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.autoPlay)
 					.onChange(async (value) => {
-						this.plugin.settings.mySetting = value;
+						this.plugin.settings.autoPlay = value;
 						await this.plugin.saveSettings();
 					}),
 			);

@@ -6,15 +6,48 @@
       {
         "id": "37a9e699471f1b57",
         "type": "tabs",
+        "dimension": 45.11128775834658,
         "children": [
           {
             "id": "096be70db1eaaed1",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "demo.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "demo"
+            }
+          },
+          {
+            "id": "30902ae76dcc8cc8",
+            "type": "leaf",
+            "state": {
+              "type": "video-loop-player",
+              "state": {},
+              "icon": "play",
+              "title": "Video Player"
+            }
+          }
+        ],
+        "currentTab": 1
+      },
+      {
+        "id": "ecf77b0241b03978",
+        "type": "tabs",
+        "dimension": 54.888712241653415,
+        "children": [
+          {
+            "id": "3850b3843189c025",
+            "type": "leaf",
+            "state": {
+              "type": "video-loop-subtitle",
+              "state": {},
+              "icon": "subtitles",
+              "title": "Subtitles"
             }
           }
         ]
@@ -49,7 +82,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "[\"subtitle\"]",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -70,11 +103,13 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "9bc7fb0121e76df4",
@@ -90,6 +125,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "demo.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +135,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for demo"
             }
           },
           {
@@ -150,23 +186,26 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "demo.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of demo"
             }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 300,
+    "width": 383.5,
     "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
+      "video-loop:Open Video Loop": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -176,6 +215,14 @@
       "bases:Create new base": false
     }
   },
-  "active": "096be70db1eaaed1",
-  "lastOpenFiles": []
+  "active": "3850b3843189c025",
+  "lastOpenFiles": [
+    "subtitles/DoctorWhoS09E11HeavenSent.srt",
+    "subtitles/Doctor.Who.S09E11.720p.HDTV.FoV.en.srt",
+    "subtitles/DoctorWhoS09E11HeavenSent.ass",
+    "subtitles/doctor.who.2005.s09e11.1080p.bluray.x264-cadaver.ass",
+    "subtitles/sample.ass",
+    "subtitles",
+    "demo.md"
+  ]
 }

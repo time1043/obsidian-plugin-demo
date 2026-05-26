@@ -1,8 +1,111 @@
-/*
+/* Video Player */
+.video-loop-player-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	background: #000;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.video-loop-video {
+	max-width: 100%;
+	max-height: 100%;
+}
 
-If your plugin does not need CSS, delete this file.
+/* Subtitle View */
+.video-loop-subtitle-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
 
-*/
+/* AB Controls */
+.video-loop-ab-controls {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--background-modifier-border);
+	flex-shrink: 0;
+}
+
+.video-loop-ab-btn {
+	padding: 4px 12px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	background: var(--interactive-normal);
+	color: var(--text-normal);
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 14px;
+	min-width: 36px;
+}
+
+.video-loop-ab-btn:hover {
+	background: var(--interactive-hover);
+}
+
+.video-loop-ab-btn-a {
+	border-color: var(--color-green);
+	color: var(--color-green);
+}
+
+.video-loop-ab-btn-b {
+	border-color: var(--color-orange);
+	color: var(--color-orange);
+}
+
+.video-loop-ab-btn-clear {
+	border-color: var(--color-red);
+	color: var(--color-red);
+}
+
+.video-loop-ab-status {
+	margin-left: auto;
+	font-size: 12px;
+	color: var(--text-muted);
+}
+
+.video-loop-ab-status-active {
+	color: var(--text-accent);
+	font-weight: 600;
+}
+
+/* Subtitle List */
+.video-loop-subtitle-list {
+	flex: 1;
+	overflow-y: auto;
+	padding: 8px;
+}
+
+.video-loop-subtitle-item {
+	display: flex;
+	align-items: baseline;
+	gap: 12px;
+	padding: 6px 8px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.15s;
+}
+
+.video-loop-subtitle-item:hover {
+	background: var(--background-modifier-hover);
+}
+
+.video-loop-subtitle-item.video-loop-subtitle-active {
+	background: var(--background-modifier-active-border);
+	border-left: 3px solid var(--text-accent);
+}
+
+.video-loop-subtitle-time {
+	flex-shrink: 0;
+	font-size: 12px;
+	color: var(--text-muted);
+	font-family: var(--font-monospace);
+	min-width: 40px;
+}
+
+.video-loop-subtitle-text {
+	color: var(--text-normal);
+	line-height: 1.6;
+}

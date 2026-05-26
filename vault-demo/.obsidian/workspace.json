@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "37a9e699471f1b57",
+        "id": "9ac506fa4f9f08d4",
         "type": "tabs",
         "children": [
           {
-            "id": "096be70db1eaaed1",
+            "id": "f1ef92dbf646c3d7",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "DoctorWhoS09E11HeavenSent.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "DoctorWhoS09E11HeavenSent"
             }
           }
         ]
@@ -74,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "9bc7fb0121e76df4",
@@ -90,6 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "DoctorWhoS09E11HeavenSent.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for DoctorWhoS09E11HeavenSent"
             }
           },
           {
@@ -108,11 +114,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "DoctorWhoS09E11HeavenSent.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from DoctorWhoS09E11HeavenSent"
             }
           },
           {
@@ -150,20 +157,31 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "DoctorWhoS09E11HeavenSent.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of DoctorWhoS09E11HeavenSent"
+            }
+          },
+          {
+            "id": "cde51bff653e8536",
+            "type": "leaf",
+            "state": {
+              "type": "annotation-sidebar-view",
+              "state": {},
+              "icon": "highlighter",
+              "title": "Annotations"
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -176,6 +194,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "096be70db1eaaed1",
-  "lastOpenFiles": []
+  "active": "f1ef92dbf646c3d7",
+  "lastOpenFiles": [
+    "DoctorWhoS09E11HeavenSent.md",
+    "DoctorWhoS09E11HeavenSent.md.annotations.json",
+    "Untitled.base"
+  ]
 }

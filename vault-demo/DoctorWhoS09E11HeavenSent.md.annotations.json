@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "annotations": [
+    {
+      "id": "by5hz4tl",
+      "from": 51,
+      "to": 108,
+      "selectedText": "As you come into this world, something else is also born.",
+      "note": "ok",
+      "color": "yellow",
+      "createdAt": 1779776565069
+    },
+    {
+      "id": "ibeoxt3a",
+      "from": 1391,
+      "to": 1467,
+      "selectedText": "Clara said I shouldn't take revenge. You should know, I don't always listen.",
+      "note": "demo demo",
+      "color": "pink",
+      "createdAt": 1779776571644
+    },
+    {
+      "id": "uuqmgi37",
+      "from": 4072,
+      "to": 4141,
+      "selectedText": "You've seen me do that more often than most. Isn't that right, Clara?",
+      "note": "oswin oswald",
+      "color": "green",
+      "createdAt": 1779776821656
+    },
+    {
+      "id": "h90chjjx",
+      "from": 3784,
+      "to": 3812,
+      "selectedText": "No, of course I had to jump!",
+      "note": "okoko",
+      "color": "yellow",
+      "createdAt": 1779777497958
+    }
+  ]
+}

@@ -1,79 +1,86 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin } from "obsidian";
+import { Plugin, TFile } from "obsidian";
+import { createAnnotationPopoverHandler } from "./editor/annotation-popover";
 import {
+	annotationDecoField,
+	dispatchAnnotations,
+} from "./editor/highlight-plugin";
+import {
+	AnnotationPluginSettings,
+	AnnotationSettingTab,
 	DEFAULT_SETTINGS,
-	MyPluginSettings,
-	SampleSettingTab,
 } from "./settings";
+import { getAnnotationsPath, loadAnnotations } from "./storage";
+import {
+	AnnotationsView,
+	createEditorClickHandler,
+	VIEW_TYPE_ANNOTATIONS,
+} from "./ui/annotations-view";
 
-// Remember to rename these classes and interfaces!
-
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+export default class AnnotationPlugin extends Plugin {
+	settings: AnnotationPluginSettings;
 
 	async onload() {
 		await this.loadSettings();
 
-		// This creates an icon in the left ribbon.
-		this.addRibbonIcon("dice", "Sample", (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice("This is a notice!");
-		});
+		// CM6 StateField for decorations (no ViewPlugin)
+		this.registerEditorExtension([
+			annotationDecoField,
+			createEditorClickHandler(this.app),
+			createAnnotationPopoverHandler(this.app, this),
+		]);
 
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText("Status bar text");
-
-		// This adds a simple command that can be triggered anywhere
-		this.addCommand({
-			id: "open-modal-simple",
-			name: "Open modal (simple)",
-			callback: () => {
-				new SampleModal(this.app).open();
-			},
-		});
-		// This adds an editor command that can perform some operation on the current editor instance
-		this.addCommand({
-			id: "replace-selected",
-			name: "Replace selected content",
-			editorCallback: (editor: Editor, view: MarkdownView) => {
-				editor.replaceSelection("Sample editor command");
-			},
-		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
-		this.addCommand({
-			id: "open-modal-complex",
-			name: "Open modal (complex)",
-			checkCallback: (checking: boolean) => {
-				// Conditions to check
-				const markdownView =
-					this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (markdownView) {
-					// If checking is true, we're simply "checking" if the command can be run.
-					// If checking is false, then we want to actually perform the operation.
-					if (!checking) {
-						new SampleModal(this.app).open();
-					}
-
-					// This command will only show up in Command Palette when the check function returns true
-					return true;
-				}
-				return false;
-			},
-		});
-
-		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
-
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
-		this.registerDomEvent(document, "click", (evt: MouseEvent) => {
-			new Notice("Click OK");
-		});
-
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(
-			window.setInterval(() => console.log("setInterval"), 5 * 60 * 1000),
+		// Sidebar view
+		this.registerView(
+			VIEW_TYPE_ANNOTATIONS,
+			(leaf) => new AnnotationsView(leaf, this),
 		);
+
+		// Refresh annotations + sidebar on file switch
+		this.registerEvent(
+			this.app.workspace.on("file-open", (file) => {
+				if (file) this.loadAndDispatch(file.path);
+			}),
+		);
+		this.registerEvent(
+			this.app.workspace.on("active-leaf-change", () => {
+				const file = this.app.workspace.getActiveFile();
+				if (file) this.loadAndDispatch(file.path);
+			}),
+		);
+
+		// Handle file rename
+		this.registerEvent(
+			this.app.vault.on("rename", (file, oldPath) => {
+				if (file instanceof TFile && file.extension === "md") {
+					this.handleRename(oldPath, file.path);
+				}
+			}),
+		);
+
+		// Load for the file already open when plugin starts
+		this.app.workspace.onLayoutReady(async () => {
+			// Open sidebar
+			const existingLeaves =
+				this.app.workspace.getLeavesOfType(VIEW_TYPE_ANNOTATIONS);
+			if (existingLeaves.length === 0) {
+				this.app.workspace.getRightLeaf(false)?.setViewState({
+					type: VIEW_TYPE_ANNOTATIONS,
+					active: false,
+				});
+			}
+			// Load annotations for current file
+			const file = this.app.workspace.getActiveFile();
+			if (file) await this.loadAndDispatch(file.path);
+		});
+
+		// Command
+		this.addCommand({
+			id: "open-annotations-sidebar",
+			name: "Open annotations sidebar",
+			callback: () => this.activateSidebarView(),
+		});
+
+		this.addSettingTab(new AnnotationSettingTab(this.app, this));
 	}
 
 	onunload() {}
@@ -82,27 +89,49 @@ export default class MyPlugin extends Plugin {
 		this.settings = Object.assign(
 			{},
 			DEFAULT_SETTINGS,
-			(await this.loadData()) as Partial<MyPluginSettings>,
+			(await this.loadData()) as Partial<AnnotationPluginSettings>,
 		);
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
-}
 
-class SampleModal extends Modal {
-	constructor(app: App) {
-		super(app);
+	private async loadAndDispatch(filePath: string) {
+		const fileData = await loadAnnotations(this.app.vault, filePath);
+		dispatchAnnotations(this.app, fileData.annotations);
+
+		const sidebarLeaves =
+			this.app.workspace.getLeavesOfType(VIEW_TYPE_ANNOTATIONS);
+		const sidebarView = sidebarLeaves[0]?.view;
+		if (sidebarView instanceof AnnotationsView) {
+			sidebarView.refresh(filePath);
+		}
 	}
 
-	onOpen() {
-		let { contentEl } = this;
-		contentEl.setText("Woah!");
+	private async handleRename(oldPath: string, newPath: string) {
+		const oldAnnoPath = getAnnotationsPath(oldPath);
+		const newAnnoPath = getAnnotationsPath(newPath);
+		const oldFile = this.app.vault.getAbstractFileByPath(oldAnnoPath);
+		if (oldFile instanceof TFile) {
+			await this.app.vault.rename(oldFile, newAnnoPath);
+		}
 	}
 
-	onClose() {
-		const { contentEl } = this;
-		contentEl.empty();
+	private activateSidebarView() {
+		const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_ANNOTATIONS);
+		const firstLeaf = leaves[0];
+		if (firstLeaf) {
+			this.app.workspace.revealLeaf(firstLeaf);
+		} else {
+			const leaf = this.app.workspace.getRightLeaf(false);
+			if (leaf) {
+				leaf.setViewState({
+					type: VIEW_TYPE_ANNOTATIONS,
+					active: true,
+				});
+				this.app.workspace.revealLeaf(leaf);
+			}
+		}
 	}
 }

@@ -6,6 +6,7 @@
       {
         "id": "37a9e699471f1b57",
         "type": "tabs",
+        "dimension": 21.2241653418124,
         "children": [
           {
             "id": "096be70db1eaaed1",
@@ -22,7 +23,7 @@
             }
           },
           {
-            "id": "4da306e55fde87c7",
+            "id": "d024bc621897925f",
             "type": "leaf",
             "state": {
               "type": "video-loop-subtitle",
@@ -35,11 +36,12 @@
         "currentTab": 1
       },
       {
-        "id": "419dee768635db03",
+        "id": "7d2288b7ef623841",
         "type": "tabs",
+        "dimension": 78.7758346581876,
         "children": [
           {
-            "id": "ad3c9a0d9f0eb5d5",
+            "id": "7b575b471a8efd47",
             "type": "leaf",
             "state": {
               "type": "video-loop-player",
@@ -213,7 +215,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "ad3c9a0d9f0eb5d5",
+  "active": "d024bc621897925f",
   "lastOpenFiles": [
     "subtitles/DoctorWhoS09E11HeavenSent.srt",
     "subtitles/Doctor.Who.S09E11.720p.HDTV.FoV.en.srt",

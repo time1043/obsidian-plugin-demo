@@ -4,9 +4,26 @@
     "type": "split",
     "children": [
       {
+        "id": "6e38f381eed40a26",
+        "type": "tabs",
+        "dimension": 24.205087440381558,
+        "children": [
+          {
+            "id": "920a7112824fcf31",
+            "type": "leaf",
+            "state": {
+              "type": "video-loop-subtitle",
+              "state": {},
+              "icon": "subtitles",
+              "title": "Subtitles"
+            }
+          }
+        ]
+      },
+      {
         "id": "37a9e699471f1b57",
         "type": "tabs",
-        "dimension": 45.11128775834658,
+        "dimension": 75.79491255961844,
         "children": [
           {
             "id": "096be70db1eaaed1",
@@ -23,7 +40,7 @@
             }
           },
           {
-            "id": "30902ae76dcc8cc8",
+            "id": "37333f6c6cc930b2",
             "type": "leaf",
             "state": {
               "type": "video-loop-player",
@@ -34,23 +51,6 @@
           }
         ],
         "currentTab": 1
-      },
-      {
-        "id": "ecf77b0241b03978",
-        "type": "tabs",
-        "dimension": 54.888712241653415,
-        "children": [
-          {
-            "id": "3850b3843189c025",
-            "type": "leaf",
-            "state": {
-              "type": "video-loop-subtitle",
-              "state": {},
-              "icon": "subtitles",
-              "title": "Subtitles"
-            }
-          }
-        ]
       }
     ],
     "direction": "vertical"
@@ -215,7 +215,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "3850b3843189c025",
+  "active": "37333f6c6cc930b2",
   "lastOpenFiles": [
     "subtitles/DoctorWhoS09E11HeavenSent.srt",
     "subtitles/Doctor.Who.S09E11.720p.HDTV.FoV.en.srt",

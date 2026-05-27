@@ -160,8 +160,8 @@ export default class VideoLoopPlugin extends Plugin {
 			if (splitEl) {
 				const children = splitEl.querySelectorAll(":scope > .workspace-tabs");
 				if (children.length === 2) {
-					(children[0] as HTMLElement).style.flex = "3";
-					(children[1] as HTMLElement).style.flex = "7";
+					(children[0] as HTMLElement).style.flex = "2";
+					(children[1] as HTMLElement).style.flex = "8";
 				}
 			}
 		}, 100);

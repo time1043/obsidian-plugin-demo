@@ -202,6 +202,9 @@ export default class VideoLoopPlugin extends Plugin {
 			onGetCurrentTime: () => {
 				return this.videoView?.getCurrentTime() ?? 0;
 			},
+			onTogglePlay: () => {
+				this.videoView?.togglePlay();
+			},
 		});
 	}
 

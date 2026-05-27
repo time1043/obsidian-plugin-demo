@@ -17,6 +17,8 @@ export class SubtitleView extends ItemView {
 	private onSetB: ((time: number) => void) | null = null;
 	private onClearAB: (() => void) | null = null;
 	private onGetCurrentTime: (() => number) | null = null;
+	private onTogglePlay: (() => void) | null = null;
+	private keyHandler: ((e: KeyboardEvent) => void) | null = null;
 
 	constructor(leaf: WorkspaceLeaf) {
 		super(leaf);
@@ -39,6 +41,7 @@ export class SubtitleView extends ItemView {
 		if (!container) return;
 		container.empty();
 		container.addClass("video-loop-subtitle-container");
+		(container as HTMLElement).setAttribute("tabindex", "-1");
 
 		// AB controls
 		const controlsEl = container.createDiv({
@@ -87,9 +90,27 @@ export class SubtitleView extends ItemView {
 		this.subtitleContainerEl = container.createDiv({
 			cls: "video-loop-subtitle-list",
 		});
+
+		// Keyboard: space → toggle play/pause
+		this.keyHandler = (e: KeyboardEvent) => {
+			if (e.code === "Space") {
+				e.preventDefault();
+				this.onTogglePlay?.();
+			}
+		};
+		container.addEventListener("keydown", this.keyHandler);
+		container.addEventListener("click", () => {
+			(container as HTMLElement).focus();
+		});
+		(container as HTMLElement).focus();
 	}
 
 	async onClose(): Promise<void> {
+		if (this.keyHandler) {
+			const container = this.containerEl.children[1];
+			container?.removeEventListener("keydown", this.keyHandler);
+			this.keyHandler = null;
+		}
 		this.subtitleContainerEl = null;
 		this.abStatusEl = null;
 		this.subtitleEls.clear();
@@ -122,12 +143,14 @@ export class SubtitleView extends ItemView {
 		onSetB: (time: number) => void;
 		onClearAB: () => void;
 		onGetCurrentTime: () => number;
+		onTogglePlay: () => void;
 	}): void {
 		this.onSubtitleClick = opts.onSubtitleClick;
 		this.onSetA = opts.onSetA;
 		this.onSetB = opts.onSetB;
 		this.onClearAB = opts.onClearAB;
 		this.onGetCurrentTime = opts.onGetCurrentTime;
+		this.onTogglePlay = opts.onTogglePlay;
 	}
 
 	private renderSubtitles(): void {

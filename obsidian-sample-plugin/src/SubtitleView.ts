@@ -182,6 +182,39 @@ export class SubtitleView extends ItemView {
 			} else if (e.code === "ArrowRight") {
 				e.preventDefault();
 				this.onJumpNext?.();
+			} else if (e.code === "KeyZ") {
+				e.preventDefault();
+				const sub = this.getCurrentSubtitle();
+				const time = sub?.start ?? (this.onGetCurrentTime?.() ?? 0);
+				this.abLoop.a = time;
+				this.onSetA?.(time);
+				this.updateABDisplay();
+			} else if (e.code === "KeyX") {
+				e.preventDefault();
+				const sub = this.getCurrentSubtitle();
+				const time = sub?.end ?? (this.onGetCurrentTime?.() ?? 0);
+				this.abLoop.b = time;
+				this.abLoop.active = true;
+				this.onSetB?.(time);
+				this.updateABDisplay();
+				this.updateLoopHighlight();
+			} else if (e.code === "KeyC") {
+				e.preventDefault();
+				if (this.abLoop.active) {
+					this.abLoop = { a: null, b: null, active: false };
+					this.onClearAB?.();
+				} else {
+					const sub = this.subtitles.find(
+						(s) => s.id === this.currentSubtitleId,
+					);
+					if (sub) {
+						this.abLoop = { a: sub.start, b: sub.end, active: true };
+						this.onSetA?.(sub.start);
+						this.onSetB?.(sub.end);
+					}
+				}
+				this.updateABDisplay();
+				this.updateLoopHighlight();
 			}
 		};
 		container.addEventListener("keydown", this.keyHandler);

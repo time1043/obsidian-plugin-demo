@@ -4,12 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "37a9e699471f1b57",
+        "id": "6b9574a7ef5b4668",
         "type": "tabs",
-        "dimension": 20.38950715421304,
         "children": [
           {
-            "id": "096be70db1eaaed1",
+            "id": "917a1f0def4468f9",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -23,7 +22,7 @@
             }
           },
           {
-            "id": "ee5b93ee2d44b5e7",
+            "id": "834b0ada357d307c",
             "type": "leaf",
             "state": {
               "type": "video-loop-subtitle",
@@ -36,12 +35,11 @@
         "currentTab": 1
       },
       {
-        "id": "437235487e4e2911",
+        "id": "056f5a3f8d83a143",
         "type": "tabs",
-        "dimension": 79.61049284578696,
         "children": [
           {
-            "id": "f0ab7732ff11f401",
+            "id": "28ddfabd28371cec",
             "type": "leaf",
             "state": {
               "type": "video-loop-player",
@@ -215,14 +213,14 @@
       "bases:Create new base": false
     }
   },
-  "active": "ee5b93ee2d44b5e7",
+  "active": "28ddfabd28371cec",
   "lastOpenFiles": [
+    "demo.md",
     "subtitles/DoctorWhoS09E11HeavenSent.srt",
     "subtitles/Doctor.Who.S09E11.720p.HDTV.FoV.en.srt",
     "subtitles/DoctorWhoS09E11HeavenSent.ass",
     "subtitles/doctor.who.2005.s09e11.1080p.bluray.x264-cadaver.ass",
     "subtitles/sample.ass",
-    "subtitles",
-    "demo.md"
+    "subtitles"
   ]
 }

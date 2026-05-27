@@ -76,37 +76,72 @@
 .video-loop-speed-controls {
 	display: flex;
 	align-items: center;
-	gap: 4px;
+	gap: 8px;
 	padding: 4px 12px;
 	border-bottom: 1px solid var(--background-modifier-border);
 	flex-shrink: 0;
 }
 
-.video-loop-speed-btn {
-	padding: 2px 8px;
-	border: 1px solid var(--background-modifier-border);
-	border-radius: 4px;
-	background: var(--interactive-normal);
-	color: var(--text-normal);
-	cursor: pointer;
-	font-size: 12px;
-}
-
-.video-loop-speed-btn:hover {
-	background: var(--interactive-hover);
-}
-
-.video-loop-speed-adjust {
-	font-weight: 600;
-}
-
 .video-loop-speed-display {
-	margin-left: auto;
 	font-size: 12px;
 	color: var(--text-muted);
 	font-family: var(--font-monospace);
 	min-width: 32px;
-	text-align: right;
+	text-align: left;
+}
+
+.video-loop-speed-slider-wrap {
+	flex: 1;
+	position: relative;
+	padding-bottom: 22px;
+}
+
+.video-loop-speed-track {
+	position: relative;
+	width: 100%;
+	height: 4px;
+	background: var(--background-modifier-border);
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.video-loop-speed-thumb {
+	position: absolute;
+	top: 50%;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: var(--interactive-accent);
+	transform: translate(-50%, -50%);
+	cursor: grab;
+}
+
+.video-loop-speed-thumb:active {
+	cursor: grabbing;
+}
+
+.video-loop-speed-tick {
+	position: absolute;
+	top: 14px;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.video-loop-speed-tick::before {
+	content: "";
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: var(--text-muted);
+}
+
+.video-loop-speed-tick-label {
+	font-size: 9px;
+	color: var(--text-faint);
+	line-height: 1.2;
+	margin-top: 2px;
 }
 
 /* Subtitle List */

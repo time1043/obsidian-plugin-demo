@@ -23,6 +23,7 @@ export class SubtitleView extends ItemView {
 	private onJumpNext: (() => void) | null = null;
 	private onSetSpeed: ((speed: number) => void) | null = null;
 	private speedDisplayEl: HTMLElement | null = null;
+	private sliderThumbEl: HTMLElement | null = null;
 	private currentSpeed = 1;
 	private keyHandler: ((e: KeyboardEvent) => void) | null = null;
 
@@ -117,43 +118,53 @@ export class SubtitleView extends ItemView {
 			cls: "video-loop-speed-controls",
 		});
 
-		const speedPresets = [0.25, 0.5, 1, 1.5, 2];
-		for (const speed of speedPresets) {
-			const btn = speedEl.createEl("button", {
-				text: `${speed}x`,
-				cls: "video-loop-speed-btn",
-			});
-			btn.addEventListener("click", () => {
-				this.currentSpeed = speed;
-				this.onSetSpeed?.(speed);
-				this.updateSpeedDisplay();
-			});
-		}
-
-		const btnSlower = speedEl.createEl("button", {
-			text: "-0.1",
-			cls: "video-loop-speed-btn video-loop-speed-adjust",
-		});
-		btnSlower.addEventListener("click", () => {
-			this.currentSpeed = Math.max(0.1, +(this.currentSpeed - 0.1).toFixed(2));
-			this.onSetSpeed?.(this.currentSpeed);
-			this.updateSpeedDisplay();
-		});
-
-		const btnFaster = speedEl.createEl("button", {
-			text: "+0.1",
-			cls: "video-loop-speed-btn video-loop-speed-adjust",
-		});
-		btnFaster.addEventListener("click", () => {
-			this.currentSpeed = +(this.currentSpeed + 0.1).toFixed(2);
-			this.onSetSpeed?.(this.currentSpeed);
-			this.updateSpeedDisplay();
-		});
-
 		this.speedDisplayEl = speedEl.createSpan({
 			cls: "video-loop-speed-display",
 			text: "1x",
 		});
+
+		const sliderWrap = speedEl.createDiv({
+			cls: "video-loop-speed-slider-wrap",
+		});
+
+		const track = sliderWrap.createDiv({ cls: "video-loop-speed-track" });
+		this.sliderThumbEl = track.createDiv({ cls: "video-loop-speed-thumb" });
+		this.updateSliderThumb();
+
+		const onPointerMove = (e: MouseEvent) => {
+			const rect = track.getBoundingClientRect();
+			const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+			this.currentSpeed = this.findNearestSpeed(Math.round(ratio * 100));
+			this.updateSliderThumb();
+			this.onSetSpeed?.(this.currentSpeed);
+			this.updateSpeedDisplay();
+		};
+		const onPointerUp = () => {
+			document.removeEventListener("mousemove", onPointerMove);
+			document.removeEventListener("mouseup", onPointerUp);
+		};
+		track.addEventListener("mousedown", (e: MouseEvent) => {
+			e.preventDefault();
+			onPointerMove(e);
+			document.addEventListener("mousemove", onPointerMove);
+			document.addEventListener("mouseup", onPointerUp);
+		});
+		this.sliderThumbEl.addEventListener("mousedown", (e: MouseEvent) => {
+			e.preventDefault();
+			e.stopPropagation();
+			document.addEventListener("mousemove", onPointerMove);
+			document.addEventListener("mouseup", onPointerUp);
+		});
+
+		const speeds = SubtitleView.SPEEDS;
+		const last = speeds.length - 1;
+		for (const tickSpeed of SubtitleView.TICK_SPEEDS) {
+			const idx = speeds.indexOf(tickSpeed);
+			if (idx < 0) continue;
+			const dot = sliderWrap.createDiv({ cls: "video-loop-speed-tick" });
+			dot.style.left = `${(idx / last) * 100}%`;
+			dot.createSpan({ cls: "video-loop-speed-tick-label", text: `${tickSpeed}` });
+		}
 
 		// Subtitle list
 		this.subtitleContainerEl = container.createDiv({
@@ -260,6 +271,34 @@ export class SubtitleView extends ItemView {
 
 			this.subtitleEls.set(sub.id, el);
 		}
+	}
+
+	private static readonly SPEEDS: readonly number[] = (() => {
+		const arr: number[] = [];
+		for (let s = 0.1; s <= 1.0 + 1e-9; s += 0.1) arr.push(+s.toFixed(1));
+		for (let s = 1.25; s <= 3.0 + 1e-9; s += 0.25) arr.push(+s.toFixed(2));
+		return arr;
+	})();
+
+	private static readonly TICK_SPEEDS = [0.1, 0.5, 1, 2, 3];
+
+	private findNearestSpeed(pos: number): number {
+		const speeds = SubtitleView.SPEEDS;
+		const idx = Math.round((pos / 100) * (speeds.length - 1));
+		return speeds[Math.min(idx, speeds.length - 1)] ?? 1;
+	}
+
+	private updateSliderThumb(): void {
+		if (!this.sliderThumbEl) return;
+		const speeds = SubtitleView.SPEEDS;
+		let bestIdx = 0;
+		let bestDist = Infinity;
+		for (let i = 0; i < speeds.length; i++) {
+			const d = Math.abs((speeds[i] ?? 0) - this.currentSpeed);
+			if (d < bestDist) { bestDist = d; bestIdx = i; }
+		}
+		const pct = (bestIdx / (speeds.length - 1)) * 100;
+		this.sliderThumbEl.style.left = `${pct}%`;
 	}
 
 	private updateSpeedDisplay(): void {

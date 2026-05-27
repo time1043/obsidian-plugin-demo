@@ -116,6 +116,12 @@ export class VideoPlayerView extends ItemView {
 		this.subtitles = subtitles;
 	}
 
+	setSpeed(speed: number): void {
+		if (this.videoEl) {
+			this.videoEl.playbackRate = speed;
+		}
+	}
+
 	setTimeUpdateCallback(cb: (time: number) => void): void {
 		this.onTimeUpdate = cb;
 	}

@@ -211,6 +211,9 @@ export default class VideoLoopPlugin extends Plugin {
 			onJumpNext: () => {
 				this.jumpSubtitle(1);
 			},
+			onSetSpeed: (speed: number) => {
+				this.videoView?.setSpeed(speed);
+			},
 		});
 	}
 

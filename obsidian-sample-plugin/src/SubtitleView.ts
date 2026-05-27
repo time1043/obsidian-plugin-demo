@@ -20,6 +20,9 @@ export class SubtitleView extends ItemView {
 	private onTogglePlay: (() => void) | null = null;
 	private onJumpPrev: (() => void) | null = null;
 	private onJumpNext: (() => void) | null = null;
+	private onSetSpeed: ((speed: number) => void) | null = null;
+	private speedDisplayEl: HTMLElement | null = null;
+	private currentSpeed = 1;
 	private keyHandler: ((e: KeyboardEvent) => void) | null = null;
 
 	constructor(leaf: WorkspaceLeaf) {
@@ -103,6 +106,49 @@ export class SubtitleView extends ItemView {
 			text: "No loop set",
 		});
 
+		// Speed controls
+		const speedEl = container.createDiv({
+			cls: "video-loop-speed-controls",
+		});
+
+		const speedPresets = [0.25, 0.5, 1, 1.5, 2];
+		for (const speed of speedPresets) {
+			const btn = speedEl.createEl("button", {
+				text: `${speed}x`,
+				cls: "video-loop-speed-btn",
+			});
+			btn.addEventListener("click", () => {
+				this.currentSpeed = speed;
+				this.onSetSpeed?.(speed);
+				this.updateSpeedDisplay();
+			});
+		}
+
+		const btnSlower = speedEl.createEl("button", {
+			text: "-0.1",
+			cls: "video-loop-speed-btn video-loop-speed-adjust",
+		});
+		btnSlower.addEventListener("click", () => {
+			this.currentSpeed = Math.max(0.1, +(this.currentSpeed - 0.1).toFixed(2));
+			this.onSetSpeed?.(this.currentSpeed);
+			this.updateSpeedDisplay();
+		});
+
+		const btnFaster = speedEl.createEl("button", {
+			text: "+0.1",
+			cls: "video-loop-speed-btn video-loop-speed-adjust",
+		});
+		btnFaster.addEventListener("click", () => {
+			this.currentSpeed = +(this.currentSpeed + 0.1).toFixed(2);
+			this.onSetSpeed?.(this.currentSpeed);
+			this.updateSpeedDisplay();
+		});
+
+		this.speedDisplayEl = speedEl.createSpan({
+			cls: "video-loop-speed-display",
+			text: "1x",
+		});
+
 		// Subtitle list
 		this.subtitleContainerEl = container.createDiv({
 			cls: "video-loop-subtitle-list",
@@ -169,6 +215,7 @@ export class SubtitleView extends ItemView {
 		onTogglePlay: () => void;
 		onJumpPrev: () => void;
 		onJumpNext: () => void;
+		onSetSpeed: (speed: number) => void;
 	}): void {
 		this.onSubtitleClick = opts.onSubtitleClick;
 		this.onSetA = opts.onSetA;
@@ -178,6 +225,7 @@ export class SubtitleView extends ItemView {
 		this.onTogglePlay = opts.onTogglePlay;
 		this.onJumpPrev = opts.onJumpPrev;
 		this.onJumpNext = opts.onJumpNext;
+		this.onSetSpeed = opts.onSetSpeed;
 	}
 
 	private renderSubtitles(): void {
@@ -205,6 +253,12 @@ export class SubtitleView extends ItemView {
 			});
 
 			this.subtitleEls.set(sub.id, el);
+		}
+	}
+
+	private updateSpeedDisplay(): void {
+		if (this.speedDisplayEl) {
+			this.speedDisplayEl.textContent = `${this.currentSpeed}x`;
 		}
 	}
 

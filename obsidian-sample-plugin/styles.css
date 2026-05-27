@@ -72,6 +72,43 @@
 	font-weight: 600;
 }
 
+/* Speed Controls */
+.video-loop-speed-controls {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 12px;
+	border-bottom: 1px solid var(--background-modifier-border);
+	flex-shrink: 0;
+}
+
+.video-loop-speed-btn {
+	padding: 2px 8px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	background: var(--interactive-normal);
+	color: var(--text-normal);
+	cursor: pointer;
+	font-size: 12px;
+}
+
+.video-loop-speed-btn:hover {
+	background: var(--interactive-hover);
+}
+
+.video-loop-speed-adjust {
+	font-weight: 600;
+}
+
+.video-loop-speed-display {
+	margin-left: auto;
+	font-size: 12px;
+	color: var(--text-muted);
+	font-family: var(--font-monospace);
+	min-width: 32px;
+	text-align: right;
+}
+
 /* Subtitle List */
 .video-loop-subtitle-list {
 	flex: 1;

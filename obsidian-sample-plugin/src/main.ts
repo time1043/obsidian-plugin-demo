@@ -148,7 +148,7 @@ export default class VideoLoopPlugin extends Plugin {
 
 		// Right: video view (split from subtitle leaf)
 		const videoLeaf = this.app.workspace.createLeafBySplit(subLeaf, "vertical");
-		await videoLeaf.setViewState({ type: VIDEO_PLAYER_VIEW_TYPE, active: true });
+		await videoLeaf.setViewState({ type: VIDEO_PLAYER_VIEW_TYPE, active: false });
 		this.videoView = videoLeaf.view as VideoPlayerView;
 
 		// Set 30:70 split ratio
@@ -164,6 +164,8 @@ export default class VideoLoopPlugin extends Plugin {
 					(children[1] as HTMLElement).style.flex = "8";
 				}
 			}
+			// Focus subtitle view so keyboard shortcuts work immediately
+			subEl.focus();
 		}, 100);
 	}
 

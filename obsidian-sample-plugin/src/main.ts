@@ -205,7 +205,36 @@ export default class VideoLoopPlugin extends Plugin {
 			onTogglePlay: () => {
 				this.videoView?.togglePlay();
 			},
+			onJumpPrev: () => {
+				this.jumpSubtitle(-1);
+			},
+			onJumpNext: () => {
+				this.jumpSubtitle(1);
+			},
 		});
+	}
+
+	private jumpSubtitle(direction: number): void {
+		if (this.subtitles.length === 0) return;
+		const time = this.videoView?.getCurrentTime() ?? 0;
+
+		// Find current subtitle index
+		let idx = this.subtitles.findIndex(
+			(s) => time >= s.start && time <= s.end,
+		);
+
+		// If not inside any subtitle, find the nearest previous one
+		if (idx === -1) {
+			idx = this.subtitles.findLastIndex((s) => time >= s.start);
+		}
+
+		const targetIdx = Math.max(0, Math.min(this.subtitles.length - 1, idx + direction));
+		const target = this.subtitles[targetIdx];
+		if (!target) return;
+
+		this.videoView?.jumpToTime(target.start);
+		this.videoView?.play();
+		this.subtitleView?.setCurrentSubtitle(target.id);
 	}
 
 	private abA: number | null = null;

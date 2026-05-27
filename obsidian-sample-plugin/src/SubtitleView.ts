@@ -18,6 +18,8 @@ export class SubtitleView extends ItemView {
 	private onClearAB: (() => void) | null = null;
 	private onGetCurrentTime: (() => number) | null = null;
 	private onTogglePlay: (() => void) | null = null;
+	private onJumpPrev: (() => void) | null = null;
+	private onJumpNext: (() => void) | null = null;
 	private keyHandler: ((e: KeyboardEvent) => void) | null = null;
 
 	constructor(leaf: WorkspaceLeaf) {
@@ -104,11 +106,17 @@ export class SubtitleView extends ItemView {
 			cls: "video-loop-subtitle-list",
 		});
 
-		// Keyboard: space → toggle play/pause
+		// Keyboard: space → toggle play/pause, left/right → prev/next subtitle
 		this.keyHandler = (e: KeyboardEvent) => {
 			if (e.code === "Space") {
 				e.preventDefault();
 				this.onTogglePlay?.();
+			} else if (e.code === "ArrowLeft") {
+				e.preventDefault();
+				this.onJumpPrev?.();
+			} else if (e.code === "ArrowRight") {
+				e.preventDefault();
+				this.onJumpNext?.();
 			}
 		};
 		container.addEventListener("keydown", this.keyHandler);
@@ -157,6 +165,8 @@ export class SubtitleView extends ItemView {
 		onClearAB: () => void;
 		onGetCurrentTime: () => number;
 		onTogglePlay: () => void;
+		onJumpPrev: () => void;
+		onJumpNext: () => void;
 	}): void {
 		this.onSubtitleClick = opts.onSubtitleClick;
 		this.onSetA = opts.onSetA;
@@ -164,6 +174,8 @@ export class SubtitleView extends ItemView {
 		this.onClearAB = opts.onClearAB;
 		this.onGetCurrentTime = opts.onGetCurrentTime;
 		this.onTogglePlay = opts.onTogglePlay;
+		this.onJumpPrev = opts.onJumpPrev;
+		this.onJumpNext = opts.onJumpNext;
 	}
 
 	private renderSubtitles(): void {

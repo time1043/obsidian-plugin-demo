@@ -10,6 +10,7 @@ export class SubtitleView extends ItemView {
 	private subtitleContainerEl: HTMLElement | null = null;
 	private abStatusEl: HTMLElement | null = null;
 	private subtitleEls: Map<number, HTMLElement> = new Map();
+	private loopedSubtitleIds: Set<number> = new Set();
 
 	// Callbacks
 	private onSubtitleClick: ((sub: Subtitle) => void) | null = null;
@@ -76,6 +77,7 @@ export class SubtitleView extends ItemView {
 			this.abLoop.active = true;
 			this.onSetB?.(time);
 			this.updateABDisplay();
+			this.updateLoopHighlight();
 		});
 
 		const btnClear = controlsEl.createEl("button", {
@@ -96,9 +98,13 @@ export class SubtitleView extends ItemView {
 					this.abLoop = { a: sub.start, b: sub.end, active: true };
 					this.onSetA?.(sub.start);
 					this.onSetB?.(sub.end);
+					this.updateABDisplay();
+					this.updateLoopHighlight();
+					return;
 				}
 			}
 			this.updateABDisplay();
+			this.updateLoopHighlight();
 		});
 
 		this.abStatusEl = controlsEl.createDiv({
@@ -259,6 +265,24 @@ export class SubtitleView extends ItemView {
 	private updateSpeedDisplay(): void {
 		if (this.speedDisplayEl) {
 			this.speedDisplayEl.textContent = `${this.currentSpeed}x`;
+		}
+	}
+
+	private updateLoopHighlight(): void {
+		// Remove old highlights
+		for (const id of this.loopedSubtitleIds) {
+			this.subtitleEls.get(id)?.removeClass("video-loop-subtitle-looped");
+		}
+		this.loopedSubtitleIds.clear();
+
+		if (!this.abLoop.active || this.abLoop.a === null || this.abLoop.b === null) return;
+
+		// Highlight all subtitles within A-B range
+		for (const sub of this.subtitles) {
+			if (sub.end >= this.abLoop.a && sub.start <= this.abLoop.b) {
+				this.loopedSubtitleIds.add(sub.id);
+				this.subtitleEls.get(sub.id)?.addClass("video-loop-subtitle-looped");
+			}
 		}
 	}
 

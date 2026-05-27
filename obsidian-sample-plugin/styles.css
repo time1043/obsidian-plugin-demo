@@ -135,6 +135,13 @@
 	border-left: 3px solid var(--text-accent);
 }
 
+.video-loop-subtitle-item.video-loop-subtitle-looped {
+	background: var(--background-modifier-success);
+	border-left: 3px solid var(--color-orange);
+	outline: 1px solid var(--color-orange);
+	outline-offset: -1px;
+}
+
 .video-loop-subtitle-time {
 	flex-shrink: 0;
 	font-size: 12px;

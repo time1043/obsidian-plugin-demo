@@ -119,9 +119,8 @@ export default class VideoLoopPlugin extends Plugin {
 			return;
 		}
 
-		// Open both views
-		await this.openVideoView();
-		await this.openSubtitleView();
+		// Open views in split layout: subtitle left, video right
+		await this.openSplitLayout();
 
 		// Wire everything up
 		this.videoView?.loadVideo(videoPath);
@@ -133,43 +132,39 @@ export default class VideoLoopPlugin extends Plugin {
 		new Notice(`Loaded ${this.subtitles.length} subtitles`);
 	}
 
-	private async openVideoView(): Promise<void> {
-		// Check if view already exists
-		const existing = this.app.workspace.getLeavesOfType(
-			VIDEO_PLAYER_VIEW_TYPE,
-		);
-		if (existing.length > 0) {
-			this.videoView = existing[0]?.view as VideoPlayerView;
-			this.app.workspace.revealLeaf(existing[0]!);
-			return;
+	private async openSplitLayout(): Promise<void> {
+		// Close existing leaves if open
+		for (const leaf of this.app.workspace.getLeavesOfType(VIDEO_PLAYER_VIEW_TYPE)) {
+			leaf.detach();
+		}
+		for (const leaf of this.app.workspace.getLeavesOfType(SUBTITLE_VIEW_TYPE)) {
+			leaf.detach();
 		}
 
-		const leaf = this.app.workspace.getLeaf("tab");
-		await leaf.setViewState({
-			type: VIDEO_PLAYER_VIEW_TYPE,
-			active: true,
-		});
-		this.videoView = leaf.view as VideoPlayerView;
-		this.app.workspace.revealLeaf(leaf);
-	}
+		// Left: subtitle view (replace current tab)
+		const subLeaf = this.app.workspace.getLeaf("tab");
+		await subLeaf.setViewState({ type: SUBTITLE_VIEW_TYPE, active: false });
+		this.subtitleView = subLeaf.view as SubtitleView;
 
-	private async openSubtitleView(): Promise<void> {
-		const existing = this.app.workspace.getLeavesOfType(
-			SUBTITLE_VIEW_TYPE,
-		);
-		if (existing.length > 0) {
-			this.subtitleView = existing[0]?.view as SubtitleView;
-			this.app.workspace.revealLeaf(existing[0]!);
-			return;
-		}
+		// Right: video view (split from subtitle leaf)
+		const videoLeaf = this.app.workspace.createLeafBySplit(subLeaf, "vertical");
+		await videoLeaf.setViewState({ type: VIDEO_PLAYER_VIEW_TYPE, active: true });
+		this.videoView = videoLeaf.view as VideoPlayerView;
 
-		const leaf = this.app.workspace.getLeaf("tab");
-		await leaf.setViewState({
-			type: SUBTITLE_VIEW_TYPE,
-			active: true,
-		});
-		this.subtitleView = leaf.view as SubtitleView;
-		this.app.workspace.revealLeaf(leaf);
+		// Set 30:70 split ratio
+		this.app.workspace.revealLeaf(subLeaf);
+		setTimeout(() => {
+			const subEl = this.subtitleView?.containerEl;
+			if (!subEl) return;
+			const splitEl = subEl.closest(".workspace-split");
+			if (splitEl) {
+				const children = splitEl.querySelectorAll(":scope > .workspace-tabs");
+				if (children.length === 2) {
+					(children[0] as HTMLElement).style.flex = "3";
+					(children[1] as HTMLElement).style.flex = "7";
+				}
+			}
+		}, 100);
 	}
 
 	private setupSync(): void {

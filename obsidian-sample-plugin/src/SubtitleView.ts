@@ -55,7 +55,8 @@ export class SubtitleView extends ItemView {
 			cls: "video-loop-ab-btn video-loop-ab-btn-a",
 		});
 		btnA.addEventListener("click", () => {
-			const time = this.onGetCurrentTime?.() ?? 0;
+			const sub = this.getCurrentSubtitle();
+			const time = sub?.start ?? (this.onGetCurrentTime?.() ?? 0);
 			this.abLoop.a = time;
 			this.onSetA?.(time);
 			this.updateABDisplay();
@@ -66,7 +67,8 @@ export class SubtitleView extends ItemView {
 			cls: "video-loop-ab-btn video-loop-ab-btn-b",
 		});
 		btnB.addEventListener("click", () => {
-			const time = this.onGetCurrentTime?.() ?? 0;
+			const sub = this.getCurrentSubtitle();
+			const time = sub?.end ?? (this.onGetCurrentTime?.() ?? 0);
 			this.abLoop.b = time;
 			this.abLoop.active = true;
 			this.onSetB?.(time);
@@ -204,6 +206,10 @@ export class SubtitleView extends ItemView {
 
 			this.subtitleEls.set(sub.id, el);
 		}
+	}
+
+	private getCurrentSubtitle(): Subtitle | null {
+		return this.subtitles.find((s) => s.id === this.currentSubtitleId) ?? null;
 	}
 
 	private updateABDisplay(): void {

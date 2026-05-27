@@ -76,8 +76,21 @@ export class SubtitleView extends ItemView {
 			cls: "video-loop-ab-btn video-loop-ab-btn-clear",
 		});
 		btnClear.addEventListener("click", () => {
-			this.abLoop = { a: null, b: null, active: false };
-			this.onClearAB?.();
+			if (this.abLoop.active) {
+				// Active → clear loop
+				this.abLoop = { a: null, b: null, active: false };
+				this.onClearAB?.();
+			} else {
+				// Not active → loop current sentence
+				const sub = this.subtitles.find(
+					(s) => s.id === this.currentSubtitleId,
+				);
+				if (sub) {
+					this.abLoop = { a: sub.start, b: sub.end, active: true };
+					this.onSetA?.(sub.start);
+					this.onSetB?.(sub.end);
+				}
+			}
 			this.updateABDisplay();
 		});
 

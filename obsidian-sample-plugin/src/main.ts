@@ -208,6 +208,14 @@ export default class VideoLoopPlugin extends Plugin {
 			onJumpNext: () => {
 				this.jumpSubtitle(1);
 			},
+			onSeekForward: () => {
+				const t = this.videoView?.getCurrentTime() ?? 0;
+				this.videoView?.jumpToTime(t + 30);
+			},
+			onSeekBackward: () => {
+				const t = this.videoView?.getCurrentTime() ?? 0;
+				this.videoView?.jumpToTime(Math.max(0, t - 30));
+			},
 			onSetSpeed: (speed: number) => {
 				this.videoView?.setSpeed(speed);
 			},

@@ -21,6 +21,8 @@ export class SubtitleView extends ItemView {
 	private onTogglePlay: (() => void) | null = null;
 	private onJumpPrev: (() => void) | null = null;
 	private onJumpNext: (() => void) | null = null;
+	private onSeekForward: (() => void) | null = null;
+	private onSeekBackward: (() => void) | null = null;
 	private onSetSpeed: ((speed: number) => void) | null = null;
 	private speedDisplayEl: HTMLElement | null = null;
 	private sliderThumbEl: HTMLElement | null = null;
@@ -215,6 +217,12 @@ export class SubtitleView extends ItemView {
 				}
 				this.updateABDisplay();
 				this.updateLoopHighlight();
+			} else if (e.code === "KeyA") {
+				e.preventDefault();
+				this.onSeekBackward?.();
+			} else if (e.code === "KeyD") {
+				e.preventDefault();
+				this.onSeekForward?.();
 			}
 		};
 		container.addEventListener("keydown", this.keyHandler);
@@ -265,6 +273,8 @@ export class SubtitleView extends ItemView {
 		onTogglePlay: () => void;
 		onJumpPrev: () => void;
 		onJumpNext: () => void;
+		onSeekForward: () => void;
+		onSeekBackward: () => void;
 		onSetSpeed: (speed: number) => void;
 	}): void {
 		this.onSubtitleClick = opts.onSubtitleClick;
@@ -275,6 +285,8 @@ export class SubtitleView extends ItemView {
 		this.onTogglePlay = opts.onTogglePlay;
 		this.onJumpPrev = opts.onJumpPrev;
 		this.onJumpNext = opts.onJumpNext;
+		this.onSeekForward = opts.onSeekForward;
+		this.onSeekBackward = opts.onSeekBackward;
 		this.onSetSpeed = opts.onSetSpeed;
 	}
 

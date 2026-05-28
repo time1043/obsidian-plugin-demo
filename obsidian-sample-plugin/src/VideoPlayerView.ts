@@ -122,6 +122,16 @@ export class VideoPlayerView extends ItemView {
 		}
 	}
 
+	setVolume(vol: number): void {
+		if (this.videoEl) {
+			this.videoEl.volume = Math.max(0, Math.min(1, vol));
+		}
+	}
+
+	getVolume(): number {
+		return this.videoEl?.volume ?? 1;
+	}
+
 	setTimeUpdateCallback(cb: (time: number) => void): void {
 		this.onTimeUpdate = cb;
 	}

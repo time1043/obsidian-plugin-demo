@@ -216,6 +216,18 @@ export default class VideoLoopPlugin extends Plugin {
 				const t = this.videoView?.getCurrentTime() ?? 0;
 				this.videoView?.jumpToTime(Math.max(0, t - 30));
 			},
+			onVolumeUp: () => {
+				const v = this.videoView?.getVolume() ?? 1;
+				const next = Math.min(1, v + 0.1);
+				this.videoView?.setVolume(next);
+				new Notice(`Volume: ${Math.round(next * 100)}%`);
+			},
+			onVolumeDown: () => {
+				const v = this.videoView?.getVolume() ?? 1;
+				const next = Math.max(0, v - 0.1);
+				this.videoView?.setVolume(next);
+				new Notice(`Volume: ${Math.round(next * 100)}%`);
+			},
 			onSetSpeed: (speed: number) => {
 				this.videoView?.setSpeed(speed);
 			},

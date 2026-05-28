@@ -23,6 +23,8 @@ export class SubtitleView extends ItemView {
 	private onJumpNext: (() => void) | null = null;
 	private onSeekForward: (() => void) | null = null;
 	private onSeekBackward: (() => void) | null = null;
+	private onVolumeUp: (() => void) | null = null;
+	private onVolumeDown: (() => void) | null = null;
 	private onSetSpeed: ((speed: number) => void) | null = null;
 	private speedDisplayEl: HTMLElement | null = null;
 	private sliderThumbEl: HTMLElement | null = null;
@@ -235,6 +237,12 @@ export class SubtitleView extends ItemView {
 				this.updateSliderThumb();
 				this.onSetSpeed?.(1);
 				this.updateSpeedDisplay();
+			} else if (e.code === "ArrowUp") {
+				e.preventDefault();
+				this.onVolumeUp?.();
+			} else if (e.code === "ArrowDown") {
+				e.preventDefault();
+				this.onVolumeDown?.();
 			}
 		};
 		container.addEventListener("keydown", this.keyHandler);
@@ -287,6 +295,8 @@ export class SubtitleView extends ItemView {
 		onJumpNext: () => void;
 		onSeekForward: () => void;
 		onSeekBackward: () => void;
+		onVolumeUp: () => void;
+		onVolumeDown: () => void;
 		onSetSpeed: (speed: number) => void;
 	}): void {
 		this.onSubtitleClick = opts.onSubtitleClick;
@@ -299,6 +309,8 @@ export class SubtitleView extends ItemView {
 		this.onJumpNext = opts.onJumpNext;
 		this.onSeekForward = opts.onSeekForward;
 		this.onSeekBackward = opts.onSeekBackward;
+		this.onVolumeUp = opts.onVolumeUp;
+		this.onVolumeDown = opts.onVolumeDown;
 		this.onSetSpeed = opts.onSetSpeed;
 	}
 

@@ -223,6 +223,18 @@ export class SubtitleView extends ItemView {
 			} else if (e.code === "KeyD") {
 				e.preventDefault();
 				this.onSeekForward?.();
+			} else if (e.code === "KeyW") {
+				e.preventDefault();
+				this.changeSpeed(1);
+			} else if (e.code === "KeyS") {
+				e.preventDefault();
+				this.changeSpeed(-1);
+			} else if (e.code === "KeyR") {
+				e.preventDefault();
+				this.currentSpeed = 1;
+				this.updateSliderThumb();
+				this.onSetSpeed?.(1);
+				this.updateSpeedDisplay();
 			}
 		};
 		container.addEventListener("keydown", this.keyHandler);
@@ -331,6 +343,19 @@ export class SubtitleView extends ItemView {
 		const speeds = SubtitleView.SPEEDS;
 		const idx = Math.round((pos / 100) * (speeds.length - 1));
 		return speeds[Math.min(idx, speeds.length - 1)] ?? 1;
+	}
+
+	private changeSpeed(delta: number): void {
+		const speeds = SubtitleView.SPEEDS;
+		let idx = speeds.indexOf(this.currentSpeed);
+		if (idx < 0) {
+			idx = speeds.indexOf(1);
+		}
+		idx = Math.max(0, Math.min(speeds.length - 1, idx + delta));
+		this.currentSpeed = speeds[idx] ?? 1;
+		this.updateSliderThumb();
+		this.onSetSpeed?.(this.currentSpeed);
+		this.updateSpeedDisplay();
 	}
 
 	private updateSliderThumb(): void {

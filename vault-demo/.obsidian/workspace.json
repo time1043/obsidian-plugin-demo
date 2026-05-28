@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "12528e0a333cc181",
+        "id": "7dcdf70636b065f6",
         "type": "tabs",
         "children": [
           {
-            "id": "9f4a6d7883894fbb",
+            "id": "a48555ba074d3d93",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -22,7 +22,7 @@
             }
           },
           {
-            "id": "ed506bdfc11bfa02",
+            "id": "579adbff2cd592cc",
             "type": "leaf",
             "state": {
               "type": "video-loop-subtitle",
@@ -35,11 +35,11 @@
         "currentTab": 1
       },
       {
-        "id": "ec8fb8af07bf58b6",
+        "id": "c55d2fff7cc015c2",
         "type": "tabs",
         "children": [
           {
-            "id": "99534e6e097d777f",
+            "id": "c113efa65347172a",
             "type": "leaf",
             "state": {
               "type": "video-loop-player",
@@ -213,7 +213,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "99534e6e097d777f",
+  "active": "c113efa65347172a",
   "lastOpenFiles": [
     "demo.md",
     "subtitles/DoctorWhoS09E11HeavenSent.srt",

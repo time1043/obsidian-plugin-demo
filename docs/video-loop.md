@@ -12,3 +12,15 @@
 1. 视频因为文件太大了，我不希望放在obsidian vault，通过绝对路径找到对应的视频
 2. 字幕文件我认为可以在vault中，会用专门的ass等
 3. 我觉得是需要有一个列表页面展示着所有的item，用一个md来关联一项的视频link和字幕link（md的metadata）
+
+```shell
+ffmpeg -i "C:/Users/28180/Videos/DoctorWho2014ChristmasSpecialLastChristmas.mkv" -c:v copy -c:a aac "C:/Users/28180/Videos/obh/DoctorWho2014ChristmasSpecialLastChristmas.mkv"
+
+```
+
+- https://www.tvsubs.net/tvshow-292-8.html
+- https://www.tvsubtitles.net/episode-51358.html
+- http://www.chakoteya.net/DoctorWho/35-11.html
+- https://www.doctorwhoogle.com/list/830/1
+- https://www.bbc.co.uk/writers/scripts/whoniverse/doctor-who/series-9-2015
+- https://subsaga.com/bbc/drama/doctor-who/62-twice-upon-a-time.html
